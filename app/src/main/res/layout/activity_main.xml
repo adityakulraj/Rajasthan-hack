@@ -39,6 +39,16 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/bell" />
+    <TextView
+        android:text="User id : 28371047366"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <LinearLayout
         android:weightSum="4"
         android:layout_marginBottom="10dp"
@@ -63,6 +73,8 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
         <ImageView
+            android:transitionName="img_transition"
+            android:id="@+id/rep"
             android:layout_weight="1"
             android:src="@drawable/rep"
             android:layout_width="0dp"
@@ -82,6 +94,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content" />
         <ImageView
+            android:id="@+id/people"
             android:src="@mipmap/people"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -99,5 +112,12 @@
             android:layout_weight="1"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
+    <ImageView
+        android:id="@+id/arrow"
+        android:visibility="gone"
+        android:src="@drawable/arrow"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

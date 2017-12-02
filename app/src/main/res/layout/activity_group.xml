@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:orientation="vertical"
+    android:background="@drawable/map"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="aarnav100.developer.rajafair.Group">
+        <ImageView
+            android:src="@drawable/ic_action_name"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/imageView11"
+            android:layout_toStartOf="@+id/fab"
+            android:layout_marginBottom="12dp" />
+        <ImageView
+            android:src="@drawable/p1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/imageView9"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="26dp" />
+        <ImageView
+            android:src="@drawable/p2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="66dp"
+            android:layout_marginEnd="59dp"
+            android:layout_below="@+id/imageView10"
+            android:layout_toStartOf="@+id/fab" />
+        <ImageView
+            android:src="@drawable/p3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/imageView11"
+            android:layout_above="@+id/fab"
+            android:layout_alignStart="@+id/imageView9" />
+        <ImageView
+            android:src="@drawable/p4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/imageView10"
+            android:layout_below="@+id/imageView9"
+            android:layout_alignEnd="@+id/fab" />
+    <android.support.design.widget.FloatingActionButton
+        app:backgroundTint="@color/sand"
+        android:src="@drawable/plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/fab" />
+</RelativeLayout>

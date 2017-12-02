@@ -1,5 +1,7 @@
 package aarnav100.developer.rajafair;
 
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,10 @@ public class ShopNavigate extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_navigate);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.sand));
+        }
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.sand)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         places=new ArrayList<>();
         places.add("Canteen");

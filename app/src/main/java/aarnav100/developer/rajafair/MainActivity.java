@@ -4,11 +4,17 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
+import android.graphics.drawable.ColorDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -20,6 +26,7 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -51,16 +58,20 @@ import java.util.List;
 
 import aarnav100.developer.rajafair.Views.TypeWriter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener{
     private static final String TAG = "AndroidCameraApi";
     private TextureView textureView;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    private SensorManager sensorManager;
+    private Sensor rotation;
+
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
         ORIENTATIONS.append(Surface.ROTATION_90, 0);
         ORIENTATIONS.append(Surface.ROTATION_180, 270);
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
+
     private String cameraId;
     protected CameraDevice cameraDevice;
     protected CameraCaptureSession cameraCaptureSessions;
@@ -71,28 +82,58 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
-    private boolean open=true;
+    private boolean open = true;
+    private ImageView arrow;
+    private float init_y=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TypeWriter tw = (TypeWriter)findViewById(R.id.rep_text);
-        tw.animateText(new String[]{"Welcome to Land of Wonders","We are here to assisst you","Click on the icon to chat"});
+        arrow = (ImageView)findViewById(R.id.arrow);
+        arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                arrow.setVisibility(View.GONE);
+                sensorManager.unregisterListener(MainActivity.this);
+            }
+        });
+        (findViewById(R.id.people)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,Group.class));
+            }
+        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.sand));
+        }
+        findViewById(R.id.rep).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,Chat.class);
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, view ,"img_transition");
+                    startActivity(intent, options.toBundle());
+            }
+        });
+        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        rotation = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        TypeWriter tw = (TypeWriter) findViewById(R.id.rep_text);
+        tw.animateText(new String[]{"Welcome to Land of Wonders", "We are here to assisst you", "Click on the icon to chat"});
         findViewById(R.id.shop).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,ShopNavigate.class));
+                startActivityForResult(new Intent(MainActivity.this, ShopNavigate.class), 100);
             }
         });
         textureView = (TextureView) findViewById(R.id.texture);
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
 
-        ((ImageView)findViewById(R.id.bell)).setOnClickListener(new View.OnClickListener() {
+        ((ImageView) findViewById(R.id.bell)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                open=!open;
-                if(open) {
+                open = !open;
+                if (open) {
                     View med = (ImageView) findViewById(R.id.medical);
                     View info = (ImageView) findViewById(R.id.info);
                     View fire = (ImageView) findViewById(R.id.fire);
@@ -115,8 +156,7 @@ public class MainActivity extends AppCompatActivity {
                     animSet.setDuration(500);
                     animSet.play(animx).with(animy).with(animx2).with(animy2);
                     animSet.start();
-                }
-                else{
+                } else {
                     final View med = (ImageView) findViewById(R.id.medical);
                     final View info = (ImageView) findViewById(R.id.info);
                     final View fire = (ImageView) findViewById(R.id.fire);
@@ -163,20 +203,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
             //open your camera here
             openCamera();
         }
+
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
             // Transform you image captured size according to the surface width and height
         }
+
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
             return false;
         }
+
         @Override
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
         }
@@ -189,21 +233,25 @@ public class MainActivity extends AppCompatActivity {
             cameraDevice = camera;
             createCameraPreview();
         }
+
         @Override
         public void onDisconnected(CameraDevice camera) {
             cameraDevice.close();
         }
+
         @Override
         public void onError(CameraDevice camera, int error) {
             cameraDevice.close();
             cameraDevice = null;
         }
     };
+
     protected void startBackgroundThread() {
         mBackgroundThread = new HandlerThread("Camera Background");
         mBackgroundThread.start();
         mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
     }
+
     protected void stopBackgroundThread() {
         mBackgroundThread.quitSafely();
         try {
@@ -214,8 +262,9 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     protected void takePicture() {
-        if(null == cameraDevice) {
+        if (null == cameraDevice) {
             Log.e(TAG, "cameraDevice is null");
             return;
         }
@@ -242,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-            final File file = new File(Environment.getExternalStorageDirectory()+"/pic.jpg");
+            final File file = new File(Environment.getExternalStorageDirectory() + "/pic.jpg");
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
@@ -263,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
+
                 private void save(byte[] bytes) throws IOException {
                     OutputStream output = null;
                     try {
@@ -293,6 +343,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onConfigureFailed(CameraCaptureSession session) {
                 }
@@ -301,6 +352,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     protected void createCameraPreview() {
         try {
             SurfaceTexture texture = textureView.getSurfaceTexture();
@@ -309,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
             Surface surface = new Surface(texture);
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureRequestBuilder.addTarget(surface);
-            cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback(){
+            cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
                     //The camera is already closed
@@ -320,6 +372,7 @@ public class MainActivity extends AppCompatActivity {
                     cameraCaptureSessions = cameraCaptureSession;
                     updatePreview();
                 }
+
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
                     Toast.makeText(MainActivity.this, "Configuration change", Toast.LENGTH_SHORT).show();
@@ -329,6 +382,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     private void openCamera() {
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         Log.e(TAG, "is camera open");
@@ -349,8 +403,9 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.e(TAG, "openCamera X");
     }
+
     protected void updatePreview() {
-        if(null == cameraDevice) {
+        if (null == cameraDevice) {
             Log.e(TAG, "updatePreview error, return");
         }
         captureRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
@@ -360,6 +415,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     private void closeCamera() {
         if (null != cameraDevice) {
             cameraDevice.close();
@@ -370,6 +426,7 @@ public class MainActivity extends AppCompatActivity {
             imageReader = null;
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
@@ -380,6 +437,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -391,11 +449,44 @@ public class MainActivity extends AppCompatActivity {
             textureView.setSurfaceTextureListener(textureListener);
         }
     }
+
     @Override
     protected void onPause() {
         Log.e(TAG, "onPause");
         //closeCamera();
         stopBackgroundThread();
+        sensorManager.unregisterListener(this);
         super.onPause();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            arrow.setVisibility(View.VISIBLE);
+            sensorManager.registerListener(
+                    this,rotation,1000*100000
+            );
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        //Log.i("TAG",String.valueOf(sensorEvent.values[0]));
+        if(sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            if(init_y==0){
+                init_y = Math.abs(sensorEvent.values[0]);
+            }
+            else{
+                rotateArrow(init_y-Math.abs(sensorEvent.values[0]));
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
+    private void rotateArrow(float val){
+        arrow.setRotation(val*90);
     }
 }
