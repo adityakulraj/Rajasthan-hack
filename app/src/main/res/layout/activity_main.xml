@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:background="@android:color/transparent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="aarnav100.developer.rajafair.MainActivity">
+    <TextureView
+        android:id="@+id/texture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+    <ImageView
+        android:layout_marginLeft="20dp"
+        android:visibility="gone"
+        android:src="@drawable/info"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/info" />
+    <ImageView
+        android:visibility="gone"
+        android:src="@drawable/fire"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/fire" />
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:src="@drawable/medical"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/medical"/>
+    <ImageView
+        android:src="@drawable/bell"
+        android:layout_margin="10dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/bell" />
+    <LinearLayout
+        android:weightSum="4"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentEnd="true">
+        <LinearLayout
+            android:layout_weight="3"
+            android:gravity="end"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <aarnav100.developer.rajafair.Views.TypeWriter
+                android:id="@+id/rep_text"
+                android:padding="10dp"
+                android:gravity="center"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/rect"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <ImageView
+            android:layout_weight="1"
+            android:src="@drawable/rep"
+            android:layout_width="0dp"
+            android:layout_height="50dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginBottom="10dp"
+        android:weightSum="4"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout">
+        <ImageView
+            android:id="@+id/shop"
+            android:src="@mipmap/shops"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:src="@mipmap/people"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/map"
+            android:src="@mipmap/security"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/flight"
+            android:src="@mipmap/map"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</RelativeLayout>
