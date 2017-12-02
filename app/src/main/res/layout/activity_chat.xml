@@ -19,7 +19,14 @@
         android:background="@drawable/rect"
         android:layout_width="250dp"
         android:layout_height="wrap_content">
+        <TextView
+            android:text="Fair Care Representative"
+            android:padding="10dp"
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <ListView
+            android:divider="@null"
             android:background="#fde391"
             android:id="@+id/chat_list"
             android:layout_width="match_parent"
@@ -29,11 +36,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:id="@+id/tbox"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
             <Button
                 android:text="Send"
+                android:id="@+id/send"
                 android:backgroundTint="@color/sand"
                 android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
