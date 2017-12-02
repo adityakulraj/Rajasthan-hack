@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:background="@drawable/map"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="aarnav100.developer.rajafair.ShopNavigate">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="94dp"
+        android:layout_marginTop="20dp"
+        android:layout_toStartOf="@+id/imageView"
+        android:src="@drawable/map_pointer" />
+
+    <ImageView
+        android:src="@drawable/map_pointer"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="17dp"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/imageView4"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:src="@drawable/map_pointer"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="47dp"
+        android:id="@+id/imageView7"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/imageView4" />
+    <ImageView
+        android:src="@drawable/ic_action_name"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageView6"
+        android:layout_above="@+id/imageView7"
+        android:layout_toEndOf="@+id/imageView8"
+        android:layout_marginBottom="62dp" />
+    <ImageView
+        android:src="@drawable/map_pointer"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageView3"
+        android:layout_above="@+id/imageView8"
+        android:layout_toStartOf="@+id/imageView4"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="13dp" />
+    <ImageView
+        android:src="@drawable/map_pointer"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/imageView6"
+        android:layout_alignStart="@+id/imageView7"
+        android:layout_marginStart="13dp"
+        android:layout_marginBottom="49dp"
+        android:id="@+id/imageView8" />
+</RelativeLayout>

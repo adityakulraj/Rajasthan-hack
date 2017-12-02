@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private String cameraId;
     protected CameraDevice cameraDevice;
     protected CameraCaptureSession cameraCaptureSessions;
+    protected CaptureRequest captureRequest;
     protected CaptureRequest.Builder captureRequestBuilder;
     private Size imageDimension;
     private ImageReader imageReader;
@@ -78,11 +79,11 @@ public class MainActivity extends AppCompatActivity {
         TypeWriter tw = (TypeWriter)findViewById(R.id.rep_text);
         tw.animateText(new String[]{"Welcome to Land of Wonders","We are here to assisst you","Click on the icon to chat"});
         findViewById(R.id.shop).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                       startActivity(new Intent(MainActivity.this,ShopNavigate.class));
-                    }
-                });
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,ShopNavigate.class));
+            }
+        });
         textureView = (TextureView) findViewById(R.id.texture);
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
