@@ -100,11 +100,11 @@
             android:layout_weight="1"
             android:layout_height="wrap_content" />
         <ImageView
-            android:id="@+id/map"
-            android:src="@mipmap/security"
+            android:id="@+id/scanner"
+            android:src="@mipmap/scanner"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
         <ImageView
             android:id="@+id/flight"
             android:src="@mipmap/map"
@@ -118,6 +118,14 @@
         android:src="@drawable/arrow"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+    <ImageView
+        android:id="@+id/scan_img"
+        android:src="@drawable/scan"
+        android:visibility="gone"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

@@ -90,6 +90,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        (findViewById(R.id.scanner)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                (findViewById(R.id.scan_img)).setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        (findViewById(R.id.scan_img)).setVisibility(View.GONE);
+                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                        View dialogView = ((LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.dialog, null);
+                        dialogBuilder.setView(dialogView);
+                        final AlertDialog alertDialog = dialogBuilder.create();
+                        alertDialog.getWindow().getDecorView().getBackground().setAlpha(0);
+                        alertDialog.show();
+                    }
+                },5000);
+            }
+        });
         arrow = (ImageView)findViewById(R.id.arrow);
         arrow.setOnClickListener(new View.OnClickListener() {
             @Override
